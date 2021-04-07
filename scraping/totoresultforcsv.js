@@ -10,12 +10,14 @@ const main = async () => {
   const page = await browser.newPage();
   await page.goto("https://store.toto-dream.com/dcs/subos/screen/pi04/spin011/PGSPIN01101LnkHoldCntLotResultLsttoto.form?holdCntId=1231");
 
+  //tdタグの要素を抽出
   const h1s = await page.$$('td');
   var h1 = h1s[1];
   var title = await page.evaluate(el => el.innerText, h1);
 
   var output = "";
 
+  //結構強引にcsvファイルの形を形成
   for(i=3; i<94; i++){
     h1 = h1s[i];
     title = await page.evaluate(el => el.innerText, h1);
