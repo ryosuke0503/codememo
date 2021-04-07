@@ -1,0 +1,32 @@
+　　　<!DOCTYPE html>
+　　　<html>
+　　　    <head>
+　　　        <title>くじ情報(仮)</title>
+　　　        <link rel="stylesheet" href="stylesheets/common.css">
+　　　    </head>
+　　　    <body>
+　　　        <header><h1>くじ情報(仮)</h1></header>
+ 　　　       <div class="searchResult">
+　　　            <% if(result==='success'){              %>
+ 　　　           <table>
+　　　                <tr><th>index</th><th>date</th><th>time</th><th>stadium</th><th>home</th><th>away</th></tr>
+　　　            <%     var rowIndex = 0;                %>
+　　　            <%     for(var ii in recordList ){      %>
+　　　            <%         rowIndex = rowIndex+1;       %>
+　　　            <%         var record = recordList[ii]; %>
+　　　                <tr>
+　　　                    <td><%= record.index %></td>
+　　　                    <td><%= record.date %></td>
+　　　                    <td><%= record.time  %></td>
+　　　                    <td><%= record.stadium  %></td>
+　　　                    <td><%= record.home  %></td>
+　　　                    <td><%= record.away  %></td>
+ 　　　               </tr>
+ 　　　           <%     }                                %>
+ 　　　           </table>
+　　　            <% } else {                             %>
+　　　                <p><%= message %></p>
+ 　　　           <% }                                    %>
+　　　        </div>
+　　　    </body>
+　　　</html>
