@@ -2,7 +2,7 @@
 　　　var router = express.Router();
 
 　　　var sqlite3 = require('sqlite3');   //データベースアクセス
-　　　var db = new sqlite3.Database('../../sqlite3/matchresult.sqlite3'); //データベースファイル
+　　　var db = new sqlite3.Database('../matchresult.sqlite3'); //データベースファイル
 
 
 　　　/* GET home page. */
