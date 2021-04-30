@@ -8,7 +8,9 @@ const main = async () => {
   });
 
   const page = await browser.newPage();
-  await page.goto("https://store.toto-dream.com/dcs/subos/screen/pi04/spin011/PGSPIN01101LnkHoldCntLotResultLsttoto.form?holdCntId=1231");
+  //testNo:1231
+  var url = "https://store.toto-dream.com/dcs/subos/screen/pi04/spin011/PGSPIN01101LnkHoldCntLotResultLsttoto.form?holdCntId="+process.argv[2].toString()
+  await page.goto(url);
 
   //tdタグの要素を抽出
   const h1s = await page.$$('td');

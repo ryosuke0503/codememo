@@ -1,5 +1,6 @@
 import sqlite3
 import pandas as pd
+import sys
 
 # pandasでカレントディレクトリにあるcsvファイルを読み込む
 # csvには、1列目にyear, 2列目にmonth, 3列目にdayが入っているとする。
@@ -9,7 +10,7 @@ df = pd.read_csv("result.csv")
 # pandasが自動で1行目をカラム名として認識してくれる。
 df.columns = ['date', 'stadium', 'No', 'home', 'points', 'away', 'result']
 
-dbname = '../sqlite3/matchresult.sqlite3'
+dbname = str(sys.argv[1])
 
 conn = sqlite3.connect(dbname)
 cur = conn.cursor()
