@@ -9,3 +9,7 @@ http://localhost:3000/page1/result
 views/page1.ejsとviews/page2.ejsがそれぞれのページのひな型になっています。
 
 heroku用
+
+autotest.sh, autotest.batについて
+ファイルを使用するにはnode、python、pandasのインストールが必要です。(だいたいpip)
+matchresult.sqlite3というファイルもある前提なのでtouchコマンドで生成してください。
