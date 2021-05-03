@@ -4,10 +4,9 @@ create table result(date text, stadium text, No text, home text, points text, aw
 の二つのテーブルを用意します。それぞれ「くじ情報」「くじ結果」のページの表を想定しています。
 
 使い方:
-1, totoinfoforcsv.js, totoresultforcsv.jsをパイプライン実行することでinfo.csv, result.csvが生成されます。
-(例：node totoinfoforcsv.js > info.csv)
+autotest.sh <開催回> またはautotest.bat <開催回>として使用します。
+(例: autotest.sh 1232)
+result<開催回>.csvが生成され、matchresult.sqlite3に反映されます。
 
-2, updateinfo.py, updateresult.pyを実行することで生成したcsvファイルをデータベースに反映することが出来ます。
-(例: python updateinfo.py)
-
-***URLやパスの指定がかなり静的に記述されているので使用時には変更をお願いします。
+calctables.pyでmatchresult.sqlite3内のデータから各チームの得点を抜き出します。
+(現状ではまだデータベースに反映されません。)
