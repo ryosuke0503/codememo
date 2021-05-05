@@ -23,7 +23,7 @@ J1 = [
 ]
 cur.execute("SELECT * FROM sqlite_master WHERE type='table' and name='total'")
 if not cur.fetchone():
-    cur.execute('CREATE TABLE total (id int, name text, win int, lose int, draw int, getp int, losep int)')
+    cur.execute('CREATE TABLE total (id int, name text, win int, lose int, draw int, getp int, lossp int)')
     cur.execute('INSERT INTO total VALUES (0, "札幌", 0, 0, 0, 0, 0)')
     cur.execute('INSERT INTO total VALUES (1, "仙台", 0, 0, 0, 0, 0)')
     cur.execute('INSERT INTO total VALUES (2, "鹿島", 0, 0, 0, 0, 0)')
@@ -47,10 +47,16 @@ if not cur.fetchone():
     conn.commit()
 
 # 第何回のテーブルの検索
-for team in J1:
-    points = []
-    point=0
+for id,team in enumerate(J1):
+    getpoints = [] #得点のリスト
+    losspoints = [] #失点のリスト
+    getpoint=0 #総得点
+    losspoint=0 #総失点
+    win=0 #勝利数
+    lose=0 #敗北数
+    draw=0 #引き分け数
     for i in range(len(tables)):
+        #テーブルtotalは飛ばす
         if(tables[i]=='total'):
             continue
         sql = "SELECT * FROM sqlite_master WHERE type='table' and name='"+tables[i]+"'"
@@ -61,17 +67,49 @@ for team in J1:
             cur.execute(sql)
             for row in cur.fetchall():
                 #print(row)
+                #homeチームだったとき
                 if row[4]==team:
                     idx=row[5].find('-')
-                    points.append(row[5][:idx])
-                    point += int(row[5][:idx])
+                    getpoints.append(row[5][:idx])
+                    getpoint += int(row[5][:idx])
+                    losspoints.append(row[5][idx+1:])
+                    losspoint += int(row[5][idx+1:])
                     #print("home: "+row[4]+": "+row[5]+", "+row[5][:idx])
+                    #勝敗の確認
+                    if row[7]==0:
+                        draw+=1
+                    if row[7]==1:
+                        win+=1
+                    if row[7]==2:
+                        lose+=1
+                #awayチームだったとき
                 if row[6]==team:
                     idx=row[5].find('-')
-                    points.append(row[5][idx+1:])
-                    point += int(row[5][idx+1:])
+                    losspoints.append(row[5][:idx])
+                    losspoint += int(row[5][:idx])
+                    getpoints.append(row[5][idx+1:])
+                    getpoint += int(row[5][idx+1:])
                     #print("away: "+row[6]+": "+row[5]+", "+row[5][:idx])
-    print(team+": "+str(point)+": ", end='')
-    print(points)
+                    #勝敗の確認
+                    if row[7]==0:
+                        draw+=1
+                    if row[7]==1:
+                        lose+=1
+                    if row[7]==2:
+                        win+=1
+
+
+    print(str(id)+":"+str(team)+": get="+str(getpoint)+": ", end='')
+    print(getpoints)
+    print(str(id)+":"+str(team)+": loss="+str(losspoint)+": ", end='')
+    print(losspoints)
+    print(str(id)+":"+str(team)+": win="+str(win)+", lose="+str(lose)+", draw="+str(draw))
+
+    #総得点の反映
+    cur.execute("UPDATE total SET getp=?, lossp=? WHERE id=?", (int(getpoint),int(losspoint),int(id)))
+    #勝利数の反映
+    cur.execute("UPDATE total SET win=?, lose=?, draw=? WHERE id=?", (int(win),int(lose),int(draw),int(id)))
+
+conn.commit()
 cur.close()
 conn.close()
